@@ -20,6 +20,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/modules/adminlte',express.static(path.join(__dirname, 'node_modules/admin-lte')));
+app.use('/modules/bootstrap',express.static(path.join(__dirname, 'node_modules/bootstrap')));
+app.use('/modules/jquery',express.static(path.join(__dirname, 'node_modules/jquery')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

@@ -10,9 +10,41 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
+
         <h1>BoardPage</h1>
-        <!-- /.content -->
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <% if(fineDustApiSeparationData.fineDustRatingData === '좋음'){%>
+                    <div class="small-box bg-success">
+                    <%}else if(fineDustApiSeparationData.fineDustRatingData === '보통'){%>
+                    <div class="small-box bg-info">
+                    <%}else if(fineDustApiSeparationData.fineDustRatingData === '나쁨'){%>
+                    <div class="small-box bg-warning">
+                    <%}else if(fineDustApiSeparationData.fineDustRatingData === '매우 나쁨'){%>
+                    <div class="small-box bg-danger">
+                    <%}%>
+
+                        <div class="inner">
+                            <h3><%- fineDustApiSeparationData.stationName %></h3>
+
+                            <p>미세먼지 농도 <%- fineDustApiSeparationData.pm10Value %>	&#181; <%- fineDustApiSeparationData.fineDustRatingData %></p>
+                            <p>초미세먼지 농도 <%- fineDustApiSeparationData.pm25Value %>	&#181; <%- fineDustApiSeparationData.fineDustRatingData %></p>
+                        </div>
+                        <div class="icon">
+                            <% if(fineDustApiSeparationData.fineDustRatingData === '보통' || fineDustApiSeparationData.fineDustRatingData === '좋음'){%>
+                                <i class="ion ion-happy"></i>
+                            <%}else{%>
+                                <i class="ion ion-sad"></i>
+                            <%}%>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- /.content-wrapper -->
     <%- include ('../import/footer.ejs');%>
