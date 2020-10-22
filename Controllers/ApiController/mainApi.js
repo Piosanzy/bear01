@@ -4,10 +4,10 @@ var parseString = require('xml2js');
 var request = require('request');
 
 
-const api = () =>{
+const api = () => {
 
-    const covid = async () =>{
-        const url = 'http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson?serviceKey=RzprTmSFRzohYExNGEPoo27CxYJ9OQHHOnxzOd8NZwaC0wSW23BUseq82dtc58ISw7yZmTgiLsQZwuOmvi1L3w%3D%3D';
+    const covid = async () => {
+        const url = 'http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson?serviceKey=RzprTmSFRzohYExNGEPoo27CxYJ9OQHHOnxzOd8NZwaC0wSW23BUseq82dtc58ISw7yZmTgiLsQZwuOmvi1L3w%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20201021&endCreateDt=20201022&';
         let covidData;
         await axios.get(url)
             .then(function (response) {
@@ -23,24 +23,33 @@ const api = () =>{
         return covidData;
     }
 
-    const covidApiSeparation = async (covidApi) =>{
+    const covidApiSeparation = async (covidApi) => {
         const data = {
-            accExamCnt : covidApi.accExamCnt,
-            accExamCompCnt : covidApi.accExamCompCnt,
-            careCnt : covidApi.careCnt,
-            clearCnt : covidApi.clearCnt,
-            createDt : covidApi.createDt,
-            deathCnt : covidApi.deathCnt,
-            decideCnt : covidApi.decideCnt,
-            examCnt : covidApi.examCnt,
-            resutlNegCnt : covidApi.resutlNegCnt,
+            todayAccExamCnt: covidApi.item[0].accExamCnt,
+            todayAccExamCompCnt: covidApi.item[0].accExamCompCnt,
+            todayCareCnt: covidApi.item[0].careCnt,
+            todayClearCnt: covidApi.item[0].clearCnt,
+            todayCreateDt: covidApi.item[0].createDt,
+            todayDeathCnt: covidApi.item[0].deathCnt,
+            todayDecideCnt: covidApi.item[0].decideCnt,
+            todayExamCnt: covidApi.item[0].examCnt,
+            todayResutlNegCnt: covidApi.item[0].resutlNegCnt,
+            yesterdayAccExamCnt: covidApi.item[1].accExamCnt,
+            yesterdayAccExamCompCnt: covidApi.item[1].accExamCompCnt,
+            yesterdayCareCnt: covidApi.item[1].careCnt,
+            yesterdayClearCnt: covidApi.item[1].clearCnt,
+            yesterdayCreateDt: covidApi.item[1].createDt,
+            yesterdayDeathCnt: covidApi.item[1].deathCnt,
+            yesterdayDecideCnt: covidApi.item[1].decideCnt,
+            yesterdayExamCnt: covidApi.item[1].examCnt,
+            yesterdayResutlNegCnt: covidApi.item[1].resutlNegCnt,
         }
         return data;
     }
 
-    const fineDust = async (cityName) =>{
-        
-        if(cityName == null || cityName == ''){
+    const fineDust = async (cityName) => {
+
+        if (cityName == null || cityName == '') {
             cityName = '서울';
         }
         const name = urlencode(cityName);
@@ -59,60 +68,62 @@ const api = () =>{
             });
         return fineDustData;
     }
-    const fineDustRating = async (pm10Value) =>{
-        if(pm10Value <= 30){
+    const fineDustRating = async (pm10Value) => {
+        if (pm10Value <= 30) {
             return 'PM1';
-        }else if(pm10Value <= 80){
+        } else if (pm10Value <= 80) {
             return 'PM2';
-        }else if(pm10Value <=150){
+        } else if (pm10Value <= 150) {
             return 'PM3';
-        }else if(pm10Value < 0) {
+        } else if (pm10Value < 0) {
             return 'PM4';
-        }else{
+        } else {
             return 'PM5';
         }
     }
-    const fineDustApiSeparation = async (fineDustApi) =>{
+    const fineDustApiSeparation = async (fineDustApi) => {
         console.log('fineDustApi');
         const fineDustRatingData = await fineDustRating(fineDustApi.pm10Value);
         const data = {
-            stationName : fineDustApi.stationName,
-            pm10Value : fineDustApi.pm10Value,
-            fineDustRatingData : fineDustRatingData,
-            dataTime : fineDustApi.dataTime,
-            pm25Value : fineDustApi.pm25Value,
-            khaiGrade : fineDustApi.khaiGrade,
+            stationName: fineDustApi.stationName,
+            pm10Value: fineDustApi.pm10Value,
+            fineDustRatingData: fineDustRatingData,
+            dataTime: fineDustApi.dataTime,
+            pm25Value: fineDustApi.pm25Value,
+            khaiGrade: fineDustApi.khaiGrade,
         }
         return data;
     }
-    const findStationName = async (fineDustApi,name) =>{
+    const findStationName = async (fineDustApi, name) => {
         const findStationNameCount = fineDustApi.length;
-        for(let i = 0; i < findStationNameCount; i++){
-            if(fineDustApi[i].stationName === name){
+        for (let i = 0; i < findStationNameCount; i++) {
+            if (fineDustApi[i].stationName === name) {
                 return i;
             }
         }
         return 0;
     }
-    const apiCall = async (cityName) =>{
+    const apiCall = async (cityName) => {
         try {
             const covidApi = await covid();
+            console.log(covidApi);
             const covidApiSeparationData = await covidApiSeparation(covidApi);
+            console.log(covidApiSeparationData)
             const fineDustApi = await fineDust(cityName);
-            const i = await findStationName(fineDustApi,'금촌동');
+            const i = await findStationName(fineDustApi,'단대동');
             const fineDustApiSeparationData = await fineDustApiSeparation(fineDustApi[i]);
-            console.log('fineDustApiSeparation',fineDustApiSeparationData);
+            console.log('fineDustApiSeparation', fineDustApiSeparationData);
             const returnData = {
-                fineDustApiSeparationData : fineDustApiSeparationData,
-                covidApiSeparationData : covidApiSeparationData,
+                fineDustApiSeparationData: fineDustApiSeparationData,
+                covidApiSeparationData: covidApiSeparationData,
             }
             return returnData;
-        }catch (error) {
+        } catch (error) {
             console.error(error);
         }
     }
-    return{
-        apiCall : apiCall,
+    return {
+        apiCall: apiCall,
     }
 }
 
