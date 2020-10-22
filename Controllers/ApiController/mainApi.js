@@ -1,14 +1,50 @@
 var axios = require('axios');
 var urlencode = require('urlencode');
+var parseString = require('xml2js');
+var request = require('request');
+
 
 const api = () =>{
+
+    const covid = async () =>{
+        const url = 'http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson?serviceKey=RzprTmSFRzohYExNGEPoo27CxYJ9OQHHOnxzOd8NZwaC0wSW23BUseq82dtc58ISw7yZmTgiLsQZwuOmvi1L3w%3D%3D';
+        let covidData;
+        await axios.get(url)
+            .then(function (response) {
+                covidData = response.data.response.body.items;
+            })
+            .catch(function (error) {
+                // handle error
+                console.error(error);
+            })
+            .then(function () {
+                // always executed
+            });
+        return covidData;
+    }
+
+    const covidApiSeparation = async (covidApi) =>{
+        const data = {
+            accExamCnt : covidApi.accExamCnt,
+            accExamCompCnt : covidApi.accExamCompCnt,
+            careCnt : covidApi.careCnt,
+            clearCnt : covidApi.clearCnt,
+            createDt : covidApi.createDt,
+            deathCnt : covidApi.deathCnt,
+            decideCnt : covidApi.decideCnt,
+            examCnt : covidApi.examCnt,
+            resutlNegCnt : covidApi.resutlNegCnt,
+        }
+        return data;
+    }
+
     const fineDust = async (cityName) =>{
         
         if(cityName == null || cityName == ''){
             cityName = '서울';
         }
         const name = urlencode(cityName);
-        const url = `http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?serviceKey=RzprTmSFRzohYExNGEPoo27CxYJ9OQHHOnxzOd8NZwaC0wSW23BUseq82dtc58ISw7yZmTgiLsQZwuOmvi1L3w%3D%3D&numOfRows=1000&pageNo=1&sidoName=${name}&ver=1.3&_returnType=json`;
+        const url = `http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?serviceKey=RzprTmSFRzohYExNGEPoo27CxYJ9OQHHOnxzOd8NZwaC0wSW23BUseq82dtc58ISw7yZmTgiLsQZwuOmvi1L3w%3D%3D&numOfRows=116&pageNo=1&sidoName=${name}&ver=1.3&_returnType=json`;
         let fineDustData;
         await axios.get(url)
             .then(function (response) {
@@ -25,15 +61,15 @@ const api = () =>{
     }
     const fineDustRating = async (pm10Value) =>{
         if(pm10Value <= 30){
-            return '좋음';
+            return 'PM1';
         }else if(pm10Value <= 80){
-            return '보통';
+            return 'PM2';
         }else if(pm10Value <=150){
-            return '나쁨';
+            return 'PM3';
         }else if(pm10Value < 0) {
-            return '잘못된 값';
+            return 'PM4';
         }else{
-            return '매우 나쁨';
+            return 'PM5';
         }
     }
     const fineDustApiSeparation = async (fineDustApi) =>{
@@ -45,6 +81,7 @@ const api = () =>{
             fineDustRatingData : fineDustRatingData,
             dataTime : fineDustApi.dataTime,
             pm25Value : fineDustApi.pm25Value,
+            khaiGrade : fineDustApi.khaiGrade,
         }
         return data;
     }
@@ -59,12 +96,15 @@ const api = () =>{
     }
     const apiCall = async (cityName) =>{
         try {
+            const covidApi = await covid();
+            const covidApiSeparationData = await covidApiSeparation(covidApi);
             const fineDustApi = await fineDust(cityName);
-            const i = await findStationName(fineDustApi,'마포구');
+            const i = await findStationName(fineDustApi,'금촌동');
             const fineDustApiSeparationData = await fineDustApiSeparation(fineDustApi[i]);
             console.log('fineDustApiSeparation',fineDustApiSeparationData);
             const returnData = {
                 fineDustApiSeparationData : fineDustApiSeparationData,
+                covidApiSeparationData : covidApiSeparationData,
             }
             return returnData;
         }catch (error) {

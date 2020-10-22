@@ -3,7 +3,7 @@ const apiData = require('../ApiController/mainApi');
 
 const className = () =>{
     const fineDustSeverityCheck = async () =>{
-        const apiCall = await apiData.apiCall('서울');
+        const apiCall = await apiData.apiCall('경기');
         const fineDustRatingData = apiCall.fineDustApiSeparationData.fineDustRatingData;
         let divClassName = '';
         if(fineDustRatingData === '좋음'){

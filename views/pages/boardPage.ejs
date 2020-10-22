@@ -1,12 +1,11 @@
-
-<%- include ('../import/head.ejs');%>
+<%- include ('../import/head.ejs'); %>
 <body class="hold-transition sidebar-mini layout-fixed" onload="getLocation()">
 <div class="wrapper">
 
-    <%- include ('../import/topnav.ejs');%>
+    <%- include ('../import/topnav.ejs'); %>
 
     <!-- Main Sidebar Container -->
-    <%- include ('../import/sidenav.ejs');%>
+    <%- include ('../import/sidenav.ejs'); %>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -17,21 +16,18 @@
             <div class="row">
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
-                    <div class="small-box <%- classCall.smallBox%>">
+                    <div id="fineDust" class="small-box">
                         <div class="inner">
-                            <h3><%- apiCall.fineDustApiSeparationData.stationName %></h3>
-
-                            <p>미세먼지 농도 <%- apiCall.fineDustApiSeparationData.pm10Value %>	&#181; <%- apiCall.fineDustApiSeparationData.fineDustRatingData %></p>
-                            <p>초미세먼지 농도 <%- apiCall.fineDustApiSeparationData.pm25Value %>	&#181; <%- apiCall.fineDustApiSeparationData.fineDustRatingData %></p>
+                            <h3 id="stationName"></h3>
+                            <p id="pm10"></p>
+                            <p id="pm25"></p>
                         </div>
                         <div class="icon">
-                            <% if(apiCall.fineDustApiSeparationData.fineDustRatingData === '보통' || apiCall.fineDustApiSeparationData.fineDustRatingData === '좋음'){%>
-                                <i class="ion ion-happy"></i>
-                            <%}else{%>
-                                <i class="ion ion-sad"></i>
-                            <%}%>
+                            <i id="emotion" class="ion"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer">More info
+                            <i class="fas fa-arrow-circle-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -39,7 +35,7 @@
         <p id="demo"></p>
     </div>
     <!-- /.content-wrapper -->
-    <%- include ('../import/footer.ejs');%>
+    <%- include ('../import/footer.ejs'); %>
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -48,4 +44,5 @@
     <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-<%- include ('../import/script.ejs');%>
+<%- include ('../import/script.ejs'); %>
+

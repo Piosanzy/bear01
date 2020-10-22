@@ -4,8 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var boardPageRouter = require('./routes/pages');
+var usersPageRouter = require('./routes/pages/users');
+
+var boardApiRouter = require('./routes/apis');
 
 var app = express();
 
@@ -24,8 +26,10 @@ app.use('/modules/adminlte',express.static(path.join(__dirname, 'node_modules/ad
 app.use('/modules/bootstrap',express.static(path.join(__dirname, 'node_modules/bootstrap')));
 app.use('/modules/jquery',express.static(path.join(__dirname, 'node_modules/jquery')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/', boardPageRouter);
+app.use('/users', usersPageRouter);
+
+app.use('/api', boardApiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
