@@ -10,7 +10,7 @@ router.get('/', async function(req, res, next) {
   res.render('index', apiCall);
 });
 router.get('/boardPage', async function(req, res, next) {
-  const apiCall = await Controllers.apiCall();
+  const apiCall = await Controllers.apiCall('서울');
   res.render('pages/boardPage', apiCall);
 });
 module.exports = router;

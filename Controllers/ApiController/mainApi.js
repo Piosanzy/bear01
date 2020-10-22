@@ -2,12 +2,13 @@ var axios = require('axios');
 var urlencode = require('urlencode');
 
 const api = () =>{
-    const fineDust = async () =>{
-
-        const numOfRows = '1000';
-        const pageNo = '1';
-        const name = urlencode('경기');
-        const url = `http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?serviceKey=RzprTmSFRzohYExNGEPoo27CxYJ9OQHHOnxzOd8NZwaC0wSW23BUseq82dtc58ISw7yZmTgiLsQZwuOmvi1L3w%3D%3D&numOfRows=${numOfRows}&pageNo=${pageNo}&sidoName=${name}&ver=1.3&_returnType=json`;
+    const fineDust = async (cityName) =>{
+        
+        if(cityName == null || cityName == ''){
+            cityName = '서울';
+        }
+        const name = urlencode(cityName);
+        const url = `http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?serviceKey=RzprTmSFRzohYExNGEPoo27CxYJ9OQHHOnxzOd8NZwaC0wSW23BUseq82dtc58ISw7yZmTgiLsQZwuOmvi1L3w%3D%3D&numOfRows=1000&pageNo=1&sidoName=${name}&ver=1.3&_returnType=json`;
         let fineDustData;
         await axios.get(url)
             .then(function (response) {
@@ -37,7 +38,7 @@ const api = () =>{
     }
     const fineDustApiSeparation = async (fineDustApi) =>{
         console.log('fineDustApi');
-        const fineDustRatingData =await fineDustRating(fineDustApi.pm10Value);
+        const fineDustRatingData = await fineDustRating(fineDustApi.pm10Value);
         const data = {
             stationName : fineDustApi.stationName,
             pm10Value : fineDustApi.pm10Value,
@@ -56,10 +57,10 @@ const api = () =>{
         }
         return 0;
     }
-    const apiCall = async () =>{
+    const apiCall = async (cityName) =>{
         try {
-            const fineDustApi = await fineDust();
-            const i = await findStationName(fineDustApi,'금촌동');
+            const fineDustApi = await fineDust(cityName);
+            const i = await findStationName(fineDustApi,null);
             const fineDustApiSeparationData = await fineDustApiSeparation(fineDustApi[i]);
             console.log('fineDustApiSeparation',fineDustApiSeparationData);
             const returnData = {
