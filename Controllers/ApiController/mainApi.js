@@ -60,7 +60,7 @@ const api = () =>{
     const apiCall = async (cityName) =>{
         try {
             const fineDustApi = await fineDust(cityName);
-            const i = await findStationName(fineDustApi,null);
+            const i = await findStationName(fineDustApi,'마포구');
             const fineDustApiSeparationData = await fineDustApiSeparation(fineDustApi[i]);
             console.log('fineDustApiSeparation',fineDustApiSeparationData);
             const returnData = {

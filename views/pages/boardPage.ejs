@@ -17,24 +17,15 @@
             <div class="row">
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
-                    <% if(fineDustApiSeparationData.fineDustRatingData === '좋음'){%>
-                    <div class="small-box bg-success">
-                    <%}else if(fineDustApiSeparationData.fineDustRatingData === '보통'){%>
-                    <div class="small-box bg-info">
-                    <%}else if(fineDustApiSeparationData.fineDustRatingData === '나쁨'){%>
-                    <div class="small-box bg-warning">
-                    <%}else if(fineDustApiSeparationData.fineDustRatingData === '매우 나쁨'){%>
-                    <div class="small-box bg-danger">
-                    <%}%>
-
+                    <div class="small-box <%- classCall.smallBox%>">
                         <div class="inner">
-                            <h3><%- fineDustApiSeparationData.stationName %></h3>
+                            <h3><%- apiCall.fineDustApiSeparationData.stationName %></h3>
 
-                            <p>미세먼지 농도 <%- fineDustApiSeparationData.pm10Value %>	&#181; <%- fineDustApiSeparationData.fineDustRatingData %></p>
-                            <p>초미세먼지 농도 <%- fineDustApiSeparationData.pm25Value %>	&#181; <%- fineDustApiSeparationData.fineDustRatingData %></p>
+                            <p>미세먼지 농도 <%- apiCall.fineDustApiSeparationData.pm10Value %>	&#181; <%- apiCall.fineDustApiSeparationData.fineDustRatingData %></p>
+                            <p>초미세먼지 농도 <%- apiCall.fineDustApiSeparationData.pm25Value %>	&#181; <%- apiCall.fineDustApiSeparationData.fineDustRatingData %></p>
                         </div>
                         <div class="icon">
-                            <% if(fineDustApiSeparationData.fineDustRatingData === '보통' || fineDustApiSeparationData.fineDustRatingData === '좋음'){%>
+                            <% if(apiCall.fineDustApiSeparationData.fineDustRatingData === '보통' || apiCall.fineDustApiSeparationData.fineDustRatingData === '좋음'){%>
                                 <i class="ion ion-happy"></i>
                             <%}else{%>
                                 <i class="ion ion-sad"></i>
@@ -45,6 +36,7 @@
                 </div>
             </div>
         </div>
+        <p id="demo"></p>
     </div>
     <!-- /.content-wrapper -->
     <%- include ('../import/footer.ejs');%>
