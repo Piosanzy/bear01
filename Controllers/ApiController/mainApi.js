@@ -110,7 +110,7 @@ const api = () => {
             const covidApiSeparationData = await covidApiSeparation(covidApi);
             console.log(covidApiSeparationData)
             const fineDustApi = await fineDust(cityName);
-            const i = await findStationName(fineDustApi,'단대동');
+            const i = await findStationName(fineDustApi,'도봉구');
             const fineDustApiSeparationData = await fineDustApiSeparation(fineDustApi[i]);
             console.log('fineDustApiSeparation', fineDustApiSeparationData);
             const returnData = {
