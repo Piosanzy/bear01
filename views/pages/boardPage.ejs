@@ -1,5 +1,5 @@
 <%- include ('../import/head.ejs'); %>
-<body class="hold-transition sidebar-mini layout-fixed" onload="getLocation()">
+<body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
     <%- include ('../import/topnav.ejs'); %>
@@ -42,18 +42,18 @@
                     <section class="col-lg-7 connectedSortable">
                         <!-- Custom tabs (Charts with tabs)-->
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header bg-black">
                                 <h3 class="card-title">
-                                    <i class="fas fa-chart-pie mr-1"></i>
-                                    Sales
+                                    <i class="fas fa-head-side-mask"></i>
+                                    현재 코로나 상황
                                 </h3>
                                 <div class="card-tools">
                                     <ul class="nav nav-pills ml-auto">
                                         <li class="nav-item">
-                                            <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Area</a>
+                                            <a class="nav-link active text-white" href="#revenue-chart" data-toggle="tab">Today</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
+                                            <a class="nav-link text-white" href="#sales-chart" data-toggle="tab">Week</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -67,8 +67,15 @@
                                             <h3 id="covid"></h3>
                                         </div>
                                     </div>
-                                    <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-                                        fgh
+                                    <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 100%;">
+                                        <table id="week" class="table">
+                                            <tr>
+                                                <th>날짜</th>
+                                                <th>확진자 수</th>
+                                                <th>전 날 대비 확진자 수</th>
+                                            </tr>
+                                            <tbody></tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div><!-- /.card-body -->
